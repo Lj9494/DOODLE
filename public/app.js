@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         isGoingRight = true
         rightTimerId = setInterval(function () {
-            if (doodlerLeftSpace <= 340) { 
+            if (doodlerLeftSpace <= 313) { 
                 doodlerLeftSpace +=5
                 doodler.style.left = doodlerLeftSpace + 'px'
             } else moveLeft()
