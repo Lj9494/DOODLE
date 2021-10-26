@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let isGoingRight = false
       let leftTimerId
       let rightTimerId
+      let score = 0
 
 
       function createDoodler() {
@@ -56,6 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
         platform.bottom -= 4
         let visual = platform.visual
         visual.style.bottom = platform.bottom + 'px'
+
+        if (platform.bottom < 10) {
+        let firstPlatform = platforms[0].visual
+        firstPlatform.classList.remove('platform')
+        platforms.shift()
+          score++
+        console.log(platforms)
+          let newPlatform = new Platform(600)
+          platforms.push(newPlatform)
+            }
           })
         }
       }
@@ -63,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
       function  jump() {
         clearInterval(downTimerId)
         isJumping = true
-        upTimerId = setInterval(function() {
+        upTimerId = setInterval(function () {
           doodlerBottomSpace += 20
           doodler.style.bottom = doodlerBottomSpace + 'px'
           if (doodlerBottomSpace > startPoint + 200) {
@@ -75,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
       function fall() {
         clearInterval(upTimerId)
         isJumping = false
-        downTimerId = setInterval(function() {
+        downTimerId = setInterval(function () {
           doodlerBottomSpace -= 5
           doodler.style.bottom = doodlerBottomSpace + 'px'
           if (doodlerBottomSpace <= 0) {
@@ -100,12 +111,18 @@ document.addEventListener('DOMContentLoaded', () => {
       function gameOver() {
         console.log('game over')
         isGameOver = true
+        while (grid.firstChild) {
+            grid.removeChild(grid.firstChild)
+        }
+        grid.innerHTML = score
         clearInterval(upTimerId)
         clearInterval(downTimerId)
+        clearInterval(leftTimerId)
+        clearInterval(rightTimerId)
       }
 
       function control(e) {
-        if (e.key === "ArrowLeft") {
+        if (e.keyCode === "ArrowLeft") {
             moveLeft()
         } else if (e.key === "ArrowRight") {
             moveRight()
@@ -125,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 doodlerLeftSpace -=5
                 doodler.style.left = doodlerLeftSpace + 'px'
             } else moveRight()
-        },30)
+        },20)
       }
 
       function moveRight() {
@@ -139,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 doodlerLeftSpace +=5
                 doodler.style.left = doodlerLeftSpace + 'px'
             } else moveLeft()
-        },30)
+        },20)
       }
 
       function moveStraight() {
